@@ -6,7 +6,7 @@ const endScreen = document.getElementById('endScreen');
 virusPop();
 
 daysLeft = 60;
-GamepadoverNumber = 50;
+GameOverNumber = 50;
 
 function start(){
     count = 0;
@@ -14,8 +14,12 @@ function start(){
     daysRemaining = daysLeft;
 
     canevas.innerHTML = '';
-    score.innerHTML = count;
+    score.innerHTML = count; 
     days.innerHTML = daysRemaining;
+
+    // make sure to not play loop several times
+    loopPlay ? '' : game();
+    loopPlay = true;
 
     game();
 
@@ -23,7 +27,7 @@ function start(){
         let randomTime = Math.round(Math.random() * getFaster);
         getFaster > 700 ? getFaster = (getFaster * 0.90) : '';
 
-        setTimeout(() => {
+        setTimeout(() => { 
             virusPop();
             game();
         }, randomTime)
