@@ -7,6 +7,7 @@ virusPop();
 
 daysLeft = 60;
 GameOverNumber = 50;
+loopPlay = false;
 
 function start(){
     count = 0;
@@ -28,10 +29,28 @@ function start(){
         getFaster > 700 ? getFaster = (getFaster * 0.90) : '';
 
         setTimeout(() => { 
-            virusPop();
-            game();
+            if (daysRemaining === 0){
+                youWin();
+            } else if (canevas.childElementCount < GameOverNumber){
+                virusPop();
+                game();
+            } else {
+                gameOver();
+            }
         }, randomTime)
     }
+    const gameOver = () => {
+        endScreen.innerHTML = `<div class = "gameOver">Game Over<br/>score : ${count} </div>`;
+        endScreen.style.visibility = 'visible';
+        endScreen.style.opacity = '1'; 
+        loopPlay = false;
+    }
+
+    const youWin = () => {
+        let accuracy = Math.round(count / daysLeft * 100);
+        endScreen.innerHTML = `<div class = 'youWin'>Bravo<br/><span>Precision : ${accuracy}% </span></div>`;
+    }
+
 
 } 
 
@@ -68,4 +87,22 @@ document.addEventListener('click', function(e){
         count++;
         score.innerHTML = count;
     }
+});
+
+// countdown click
+canevas.addEventListener('click', () => {
+    if (daysRemaining > 0) {
+        daysRemaining--;
+        days.innerHTML = daysRemaining;
+    }
 })
+
+// hide screen on click
+endScreen.addEventListener('click', () => {
+    setTimeout(() => {
+        start();
+        endScreen.style.opacity = '0';
+        endScreen.style.visibility = 'hidden';
+    }, 3500)
+})
+    
